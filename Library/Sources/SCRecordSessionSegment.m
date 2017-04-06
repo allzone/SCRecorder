@@ -93,6 +93,7 @@
         if (error == nil) {
             image = [UIImage imageWithCGImage:lastImage];
             _lastImage = image;
+            CGImageRelease(lastImage);
         } else {
             NSLog(@"Unable to generate lastImage for %@: %@", self.url, error.localizedDescription);
         }
