@@ -717,12 +717,16 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
                 });
             }
         }
+        
+        id<SCRecorderDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(recorder:didOutputVideoSampleBuffer:)]) {
+            [delegate recorder:self didOutputVideoSampleBuffer:sampleBuffer];
+        }
 
         if (!self.audioEnabledAndReady || recordSession.audioInitialized || recordSession.audioInitializationFailed) {
             [self beginRecordSegmentIfNeeded:recordSession];
 
             if (_isRecording && recordSession.recordSegmentReady) {
-                id<SCRecorderDelegate> delegate = self.delegate;
                 CMTime duration = [self frameDurationFromConnection:connection];
 
                 double timeToWait = kMinTimeBetweenAppend - (CACurrentMediaTime() - _lastAppendedVideoTime);
@@ -788,12 +792,16 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
                 });
             }
         }
+        
+        id<SCRecorderDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(recorder:didOutputAudioSampleBuffer:)]) {
+            [delegate recorder:self didOutputAudioSampleBuffer:sampleBuffer];
+        }
 
         if (!self.videoEnabledAndReady || recordSession.videoInitialized || recordSession.videoInitializationFailed) {
             [self beginRecordSegmentIfNeeded:recordSession];
 
             if (_isRecording && recordSession.recordSegmentReady && (!self.videoEnabledAndReady || recordSession.currentSegmentHasVideo)) {
-                id<SCRecorderDelegate> delegate = self.delegate;
 //                NSLog(@"APPENDING");
 
                 [recordSession appendAudioSampleBuffer:sampleBuffer completion:^(BOOL success) {
@@ -1313,15 +1321,15 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
                 if ([currentDevice isTorchModeSupported:AVCaptureTorchModeOn]) {
                     [currentDevice setTorchMode:AVCaptureTorchModeOn];
                 }
-                if ([currentDevice isFlashModeSupported:AVCaptureFlashModeOff]) {
-                    [currentDevice setFlashMode:AVCaptureFlashModeOff];
+                if ([currentDevice isFlashAvailable]) {
+                    [AVCapturePhotoSettings photoSettings].flashMode = AVCaptureFlashModeOff;
                 }
             } else {
                 if ([currentDevice isTorchModeSupported:AVCaptureTorchModeOff]) {
                     [currentDevice setTorchMode:AVCaptureTorchModeOff];
                 }
-                if ([currentDevice isFlashModeSupported:(AVCaptureFlashMode)flashMode]) {
-                    [currentDevice setFlashMode:(AVCaptureFlashMode)flashMode];
+                if ([currentDevice isFlashAvailable]) {
+                    [AVCapturePhotoSettings photoSettings].flashMode = (AVCaptureFlashMode)flashMode;
                 }
             }
             

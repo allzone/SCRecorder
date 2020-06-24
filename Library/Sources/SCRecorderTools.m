@@ -47,7 +47,7 @@
 }
 
 + (AVCaptureDevice *)videoDeviceForPosition:(AVCaptureDevicePosition)position {
-    NSArray *videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    NSArray *videoDevices = [[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes: @[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType: AVMediaTypeVideo position:position] devices];
     
     for (AVCaptureDevice *device in videoDevices) {
         if (device.position == (AVCaptureDevicePosition)position) {
