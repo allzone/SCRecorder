@@ -579,7 +579,7 @@ NSString * const SCRecordSessionDocumentDirectory = @"DocumentDirectory";
             return;
         }
         
-        NSString *filename = [NSString stringWithFormat:@"%@SCVideo-Merged.%@", self->_identifier, fileExtension];
+        NSString *filename = [NSString stringWithFormat:@"MediaFile-%@.%@", self->_identifier, fileExtension];
         outputUrl = [SCRecordSessionSegment segmentURLForFilename:filename andDirectory:self->_segmentsDirectory];
         [self removeFile:outputUrl];
 
@@ -915,7 +915,7 @@ NSString * const SCRecordSessionDocumentDirectory = @"DocumentDirectory";
         return nil;
     }
     
-    NSString *filename = [NSString stringWithFormat:@"%@SCVideo-Merged.%@", _identifier, fileExtension];
+    NSString *filename = [NSString stringWithFormat:@"MediaFile-%@.%@", _identifier, fileExtension];
     
     return [SCRecordSessionSegment segmentURLForFilename:filename andDirectory:_segmentsDirectory];
 }
