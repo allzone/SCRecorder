@@ -228,7 +228,6 @@ static char* LoadedTimeRanges = "LoadedTimeRanges";
         SCWeakSelectorTarget *target = [[SCWeakSelectorTarget alloc] initWithTarget:self targetSelector:@selector(willRenderFrame:)];
 
         _displayLink = [CADisplayLink displayLinkWithTarget:target selector:target.handleSelector];
-        _displayLink.preferredFramesPerSecond = 1;
 
         [self setupVideoOutputToItem:self.currentItem];
 
